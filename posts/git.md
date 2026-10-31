@@ -1,8 +1,9 @@
 ---
 title: git核心概念和命令
 date: 2026-10-30
-description: git核心概念和命令使用
+description: git实战笔记：环境配置、暂存与提交、分支管理、远程仓库操作与GitHub Flow协作流程
 ---
+# git
 ##  git核心概念和命令
 ### 配置
 配置命令

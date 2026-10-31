@@ -1,12 +1,13 @@
 ---
 title: npm核心概念和命令
 date: 2026-10-30
-description: npm核心概念和命令使用
+description: npm实战笔记：包的概念与node查找顺序、配置源、项目初始化、包的安装卸载与信息查询
 ---
 npm官网：[https://www.npmjs.com/](https://www.npmjs.com/)
 
 npm全命令：[https://docs.npmjs.com/cli/v7/commands](https://docs.npmjs.com/cli/v7/commands)
 
+# npm核心概念和命令
 ## 概念
 1. 什么是**包**？\
     包（package）是一个或多个js模块的集合，它们共同完成某一类功能可以简单的认为每一个工程就是一个包有些包是为了给别人用的，这种包也叫第三方库

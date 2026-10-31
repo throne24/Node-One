@@ -37,7 +37,9 @@ export default defineConfig({
             { text: 'Agent基础', link: '/posts/AI' },
             { text: 'npm', link: '/posts/npm' },
             { text: 'git', link: '/posts/git' },
-            { text: '计算机网络原理', link: '/posts/jiwang' }
+            { text: '计算机网络原理', link: '/posts/jiwang' },
+            { text: '计算机组成原理', link: '/posts/jizu' },
+            { text: '数据库系统概述', link: '/posts/shujuku' }
           ]
         }
       ]

@@ -1,9 +1,9 @@
 ---
 title: Agent基础
 date: 2026-10-28
-description: Agent基础概念
+description: Agent基础笔记：大模型的上下文窗口与权重矩阵、Model Service、工具选择与Coding Agent原理、开发范式与最佳实践
 ---
-
+# Agent基础
 ## Raw Model
 
 剥离了花里胡哨的功能，看到AI最真实的本质
