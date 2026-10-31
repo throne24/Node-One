@@ -1,0 +1,169 @@
+/**
+ * 简洁风格：以留白和排版为主，尽量弱化装饰
+ */
+:root {
+  --vp-font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  --vp-c-brand-1: #3b6ef6;
+  --vp-c-brand-2: #2f5fe0;
+  --vp-c-brand-3: #2148b8;
+
+  --vp-layout-max-width: 1360px;
+  --vp-sidebar-width: 240px;
+}
+
+/* 收窄正文宽度，阅读更舒服 */
+.VPDoc.has-aside .content-container {
+  max-width: 700px;
+  line-height: 1.8;
+}
+
+/* 首页标题去掉渐变，保持纯色 */
+.VPHero .name .clip,
+.VPHero .text {
+  background: none;
+  -webkit-background-clip: initial;
+  background-clip: initial;
+  -webkit-text-fill-color: currentColor;
+}
+
+.VPHero .tagline {
+  max-width: 520px;
+}
+
+/* 首页特性卡片：跟随鼠标的高亮描边 */
+@media (hover: hover) {
+  .VPFeatures .VPFeature {
+    position: relative;
+    isolation: isolate;
+  }
+
+  /* 只保留 1px 描边的一圈径向渐变 */
+  .VPFeatures .VPFeature::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    padding: 1px;
+    border-radius: inherit;
+    background: radial-gradient(
+      180px circle at var(--mx, 50%) var(--my, 50%),
+      var(--vp-c-brand-1),
+      transparent 65%
+    );
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+  }
+
+  /* 卡片内部的淡光晕，位于文字下方 */
+  .VPFeatures .VPFeature::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: radial-gradient(
+      200px circle at var(--mx, 50%) var(--my, 50%),
+      rgba(71, 66, 217, 0.154),
+      transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+  }
+
+  .VPFeatures .VPFeature:hover::before,
+  .VPFeatures .VPFeature:hover::after {
+    opacity: 1;
+  }
+}
+
+/* 文章列表 */
+.post-list {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  margin-top: 28px;
+}
+
+.post-item {
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--vp-c-divider);
+}
+
+.post-item:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.post-title {
+  margin: 0 0 8px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.post-title a {
+  color: var(--vp-c-text-1);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.post-title a:hover {
+  color: var(--vp-c-brand-1);
+}
+
+.post-date {
+  font-size: 13px;
+  color: var(--vp-c-text-3);
+}
+
+.post-excerpt {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  margin-top: 10px;
+  font-size: 15px;
+  color: var(--vp-c-text-2);
+}
+
+.post-empty {
+  margin-top: 28px;
+  color: var(--vp-c-text-3);
+}
+.flip{
+  display: inline-grid;
+  overflow: hidden;
+  height: 24px;
+  line-height: 24px;
+  vertical-align: bottom;
+}
+.flip > span{
+  grid-area: 1/1;
+  transition: transform .45s cubic-bezier(.22, .61, .36, 1),opacity .45s;
+}
+.flip .flip-b{
+  grid-area: 1/1;
+  transform: translateY(100%);
+  opacity: 0;
+  color: var(--vp-c-brand-1);
+}
+.flip:hover .flip-a{
+  transform: translateY(-100%);
+  opacity: 0;
+}
+.flip:hover .flip-b{
+  transform: translateY(0);
+  opacity: 1;
+}
+@media(prefers-reduced-motion: reduce){
+  .flip > span{
+    transition: none;
+  }
+}
