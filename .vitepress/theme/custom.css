@@ -10,6 +10,12 @@
 
   --vp-layout-max-width: 1360px;
   --vp-sidebar-width: 240px;
+
+  /* 动效令牌：全站统一时长与缓动，禁止在规则里硬编码 */
+  --site-motion-fast: 160ms;
+  --site-motion-base: 240ms;
+  --site-motion-slow: 450ms;
+  --site-ease-out: cubic-bezier(.22, .61, .36, 1);
 }
 
 /* 收窄正文宽度，阅读更舒服 */
@@ -31,54 +37,73 @@
   max-width: 520px;
 }
 
-/* 首页特性卡片：跟随鼠标的高亮描边 */
+/* 首页特性卡片：描边与光晕的形状，所有设备共用；是否显现由设备分支决定 */
+.VPFeatures .VPFeature {
+  position: relative;
+  isolation: isolate;
+}
+
+/* 只保留 1px 描边的一圈径向渐变 */
+.VPFeatures .VPFeature::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 1px;
+  border-radius: inherit;
+  background: radial-gradient(
+    180px circle at var(--mx, 50%) var(--my, 50%),
+    var(--vp-c-brand-1),
+    transparent 65%
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity var(--site-motion-fast) var(--site-ease-out);
+  pointer-events: none;
+}
+
+/* 卡片内部的淡光晕，位于文字下方 */
+.VPFeatures .VPFeature::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: radial-gradient(
+    200px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(71, 66, 217, 0.154),
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity var(--site-motion-fast) var(--site-ease-out);
+  pointer-events: none;
+}
+
+/* 桌面端：支持 hover 的设备悬停点亮描边与光晕，键盘聚焦同样点亮 */
 @media (hover: hover) {
-  .VPFeatures .VPFeature {
-    position: relative;
-    isolation: isolate;
+  .VPFeatures .VPFeature:hover::before,
+  .VPFeatures .VPFeature:hover::after,
+  .VPFeatures .VPFeature:focus-visible::before,
+  .VPFeatures .VPFeature:focus-visible::after {
+    opacity: 1;
   }
+}
 
-  /* 只保留 1px 描边的一圈径向渐变 */
+/* 移动端：静态描边 + 卡片中心的柔光，不跟随指针、不过渡 */
+@media (hover: none) {
   .VPFeatures .VPFeature::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    padding: 1px;
-    border-radius: inherit;
-    background: radial-gradient(
-      180px circle at var(--mx, 50%) var(--my, 50%),
-      var(--vp-c-brand-1),
-      transparent 65%
-    );
-    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-    mask-composite: exclude;
-    opacity: 0;
-    transition: opacity 0.3s;
-    pointer-events: none;
+    background: var(--vp-c-brand-1);
+    opacity: 0.35;
   }
-
-  /* 卡片内部的淡光晕，位于文字下方 */
   .VPFeatures .VPFeature::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    border-radius: inherit;
     background: radial-gradient(
-      200px circle at var(--mx, 50%) var(--my, 50%),
+      200px circle at 50% 50%,
       rgba(71, 66, 217, 0.154),
       transparent 70%
     );
-    opacity: 0;
-    transition: opacity 0.3s;
-    pointer-events: none;
-  }
-
-  .VPFeatures .VPFeature:hover::before,
-  .VPFeatures .VPFeature:hover::after {
     opacity: 1;
   }
 }
@@ -110,7 +135,7 @@
 .post-title a {
   color: var(--vp-c-text-1);
   text-decoration: none;
-  transition: color 0.2s;
+  transition: color var(--site-motion-fast) var(--site-ease-out);
 }
 
 .post-title a:hover {
@@ -140,13 +165,11 @@
 .flip{
   display: inline-grid;
   overflow: hidden;
-  height: 24px;
-  line-height: 24px;
   vertical-align: bottom;
 }
 .flip > span{
   grid-area: 1/1;
-  transition: transform .45s cubic-bezier(.22, .61, .36, 1),opacity .45s;
+  transition: transform var(--site-motion-slow) var(--site-ease-out),opacity var(--site-motion-slow) var(--site-ease-out);
 }
 .flip .flip-b{
   grid-area: 1/1;
@@ -154,16 +177,37 @@
   opacity: 0;
   color: var(--vp-c-brand-1);
 }
-.flip:hover .flip-a{
-  transform: translateY(-100%);
-  opacity: 0;
+
+/* 桌面：指针设备悬停翻转；触屏不进入此分支，避免 hover 粘滞 */
+@media (hover: hover) and (pointer: fine){
+  .flip:hover .flip-a{
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  .flip:hover .flip-b{
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
-.flip:hover .flip-b{
-  transform: translateY(0);
-  opacity: 1;
+
+/* 触屏：轻触切换，状态由 theme/index.js 写入 data-flip */
+@media (hover: none), (pointer: coarse){
+  .flip[data-flip='b'] .flip-a{
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  .flip[data-flip='b'] .flip-b{
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
+
 @media(prefers-reduced-motion: reduce){
   .flip > span{
     transition: none;
+  }
+  /* 降级时冻结主文案，不做任何位移 */
+  .flip .flip-b{
+    display: none;
   }
 }

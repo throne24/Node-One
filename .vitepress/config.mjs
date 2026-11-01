@@ -46,6 +46,7 @@ export default defineConfig({
     },
 
     outline: { level: [2, 3], label: '本页目录' },
+    returnToTopLabel: '回到顶部',
     docFooter: { prev: '上一篇', next: '下一篇' },
     lastUpdated: { text: '最后更新于' },
 
@@ -67,10 +68,12 @@ export default defineConfig({
       }
     },
 
-    socialLinks: [{ icon: 'github', link: 'https://github.com/throne24' }],
+    socialLinks: [{ icon: 'github', link: 'https://github.com/throne24' },
+      { icon: 'xiaohongshu', link: 'https://www.xiaohongshu.com/user/profile/66a75700000000000d024daf' }
+    ],
 
     footer: {
-      message: '<span class="flip"><span class="flip-a">Only the Paranoid Survive</span><span class="flip-b">paranoid but not panicked</span></span>',
+      message: '<span class="flip"><span class="flip-a">Only the Paranoid Survive</span><span class="flip-b" aria-hidden="true">paranoid but not panicked</span></span>',
       copyright: `© 纷乱世界的不了解`
     }
   }
