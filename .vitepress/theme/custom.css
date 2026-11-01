@@ -15,6 +15,8 @@
   --site-motion-fast: 160ms;
   --site-motion-base: 240ms;
   --site-motion-slow: 450ms;
+  /* 触屏按压跟手时长：按住期间用，松手回弹用 base */
+  --site-motion-press: 120ms;
   --site-ease-out: cubic-bezier(.22, .61, .36, 1);
 }
 
@@ -92,7 +94,7 @@
   }
 }
 
-/* 移动端：静态描边 + 卡片中心的柔光，不跟随指针、不过渡 */
+/* 触屏（VitePress 1.6.x）：保留静态描边，内部光晕仅在按压时显示。 */
 @media (hover: none) {
   .VPFeatures .VPFeature::before {
     background: var(--vp-c-brand-1);
@@ -100,11 +102,38 @@
   }
   .VPFeatures .VPFeature::after {
     background: radial-gradient(
-      200px circle at 50% 50%,
-      rgba(71, 66, 217, 0.154),
+      200px circle at var(--press-glow-x, 50%) var(--press-glow-y, 50%),
+      color-mix(in srgb, var(--vp-c-brand-1) 15.4%, transparent),
       transparent 70%
     );
+    opacity: 0;
+  }
+}
+
+/* 光晕只过渡透明度；首次触点固定，不随手指移动。 */
+@media (hover: none) and (prefers-reduced-motion: no-preference) {
+  .VPFeatures .VPFeature[data-press]::after {
     opacity: 1;
+    transition-duration: var(--site-motion-press);
+  }
+}
+
+/* 触屏：按住卡片某一边，整张卡朝那一边倒下去；松手回弹。
+   角度与缩放由 theme/feature-press.js 写入 --press-*，这里只负责动画表现。
+   降级由 no-preference 与 JS 双重拦截，命中 reduce 时连 transform 都不生效 */
+@media (hover: none) and (prefers-reduced-motion: no-preference) {
+  /* 不按压时保持 transform: none，避免常驻合成层影响文字渲染 */
+  .VPFeatures .items .VPFeature {
+    transform-origin: center;
+    transition: transform var(--site-motion-base) var(--site-ease-out);
+  }
+
+  /* 按住期间跟手，缓动缩短到 press 档；松开删掉 data-press 后回到 base 回弹 */
+  .VPFeatures .items .VPFeature[data-press] {
+    transform: perspective(700px) rotateX(var(--press-rx, 0deg))
+      rotateY(var(--press-ry, 0deg)) scale(var(--press-scale, 1));
+    transition-duration: var(--site-motion-press);
+    will-change: transform;
   }
 }
 

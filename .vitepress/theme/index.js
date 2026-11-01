@@ -2,6 +2,7 @@ import DefaultTheme from 'vitepress/theme'
 import './custom.css'
 import PostList from './components/PostList.vue'
 import { bindXhsProfileLinks } from './xhs-link.js'
+import { bindFeaturePress } from './feature-press.js'
 
 /**
  * 把指针在卡片内的坐标写入 --mx / --my，
@@ -95,5 +96,7 @@ export default {
     bindFooterFlip()
     // 移动端点小红书链接时唤起 App，失败回落网页（详见 xhs-link.js）
     bindXhsProfileLinks()
+    // 触屏按压首页卡片时整卡朝按下的边倾倒（详见 feature-press.js）
+    bindFeaturePress()
   }
 }
