@@ -12,6 +12,8 @@ export default defineConfig({
   title: 'Node One',
   description: '一个用 Markdown 记录文章与想法的地方',
   base,
+  // README.md 是给 GitHub 看的仓库说明，不当作站点页面构建
+  srcExclude: ['README.md'],
   lastUpdated: true,
   head: [
     ['link', { rel: 'icon', type: 'image/svg+xml', href: `${base}favicon.svg` }],
@@ -39,7 +41,8 @@ export default defineConfig({
             { text: 'git', link: '/posts/git' },
             { text: '计算机网络原理', link: '/posts/jiwang' },
             { text: '计算机组成原理', link: '/posts/jizu' },
-            { text: '数据库系统概述', link: '/posts/shujuku' }
+            { text: '数据库系统概述', link: '/posts/shujuku' },
+            { text: '专业技能面试追问', link: '/posts/forjob' }
           ]
         }
       ]
