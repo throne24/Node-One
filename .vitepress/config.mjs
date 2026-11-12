@@ -42,7 +42,8 @@ export default defineConfig({
             { text: '计算机网络原理', link: '/posts/jiwang' },
             { text: '计算机组成原理', link: '/posts/jizu' },
             { text: '数据库系统概述', link: '/posts/shujuku' },
-            { text: '专业技能面试追问', link: '/posts/forjob' }
+            { text: '专业技能面试追问', link: '/posts/forjob' },
+            { text: '项目面试追问', link: '/posts/project-interview' }
           ]
         }
       ]
